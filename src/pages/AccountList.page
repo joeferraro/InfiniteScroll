@@ -1,0 +1,60 @@
+<apex:page controller="MyController">
+	<style>
+		.account {
+			margin:20px 0px;
+			padding:10px;
+			font-size:18px;
+			background-color:#f7f7f7;
+			border:1px solid #ccc;
+		}
+	</style>
+	<script type="text/javascript" src="{!URLFOR($Resource.jquery)}"></script>
+	<script type="text/javascript" src="{!URLFOR($Resource.scroll)}"></script>
+	<script>
+		var setPageNumber = 1;
+		var setHasNext = true;
+		
+		function showmore() {
+			MyController.getMore(setPageNumber, function(result, event) {
+				if (event.status) {  					
+					if (event.status == true) {
+						var moreposts = '';	
+						for(var i = 0; i < result.records.length; i++) {
+							moreposts += '<div class="account">'+result.records[i].Name+'</div>';
+						}
+						setPageNumber = result.pageNumber;
+						setHasNext = result.hasMore;
+						$("#wrapper").append(moreposts);
+					} else {
+						setPageNumber = 1;
+						setHasNext = false;							
+						return;
+					}
+					console.log('page number is: ' + setPageNumber);					
+				} else if (event.type === 'exception') {    
+			        	alert('Oops, we messed up. Something went wrong and we are terribly embarrassed by it.');
+			    } else {
+			           	alert('Oops, we messed up. Something went wrong and we are terribly embarrassed by it.');
+			    }
+        	}, {escape:true}); 	 		
+		}
+		
+		$(document).endlessScroll({
+			fireOnce: true,
+			fireDelay: 1000,
+			bottomPixels: 50,
+			callback: function(p) {
+				if (setHasNext)
+					showmore();
+			}
+		});		
+		
+	</script>
+	<div id="wrapper">
+		<apex:repeat value="{!infiniteScrollResponse.records}" var="r">
+			<div class="account">
+				<apex:outputText escape="false" value="{!r['Name']}"/>		
+			</div>	
+		</apex:repeat>
+	</div>	
+</apex:page>
