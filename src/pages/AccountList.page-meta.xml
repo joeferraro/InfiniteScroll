@@ -2,14 +2,4 @@
 <ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>20.0</apiVersion>
     <label>AccountList</label>
-    <packageVersions>
-        <majorNumber>1</majorNumber>
-        <minorNumber>19</minorNumber>
-        <namespace>cron</namespace>
-    </packageVersions>
-    <packageVersions>
-        <majorNumber>1</majorNumber>
-        <minorNumber>5</minorNumber>
-        <namespace>twitter</namespace>
-    </packageVersions>
 </ApexPage>
