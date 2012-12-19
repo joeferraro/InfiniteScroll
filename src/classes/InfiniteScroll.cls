@@ -1,6 +1,6 @@
 global with sharing class InfiniteScroll {
 	
-	static final Integer pageSize = 10;
+	static final Integer pageSize = 1;
 	static final String soql = 'select id, name from account order by name';
 	
     static ApexPages.StandardSetController getSObjectFeed() {
@@ -30,6 +30,10 @@ global with sharing class InfiniteScroll {
 		        return r;
         	}
     	}        
+    }
+
+    public static InfiniteScrollResponse getInfiniteScrollResponseOffset(Integer offset, Integer reclimit) {
+        return new InfiniteScrollResponse(Database.query(soql + ' limit ' + reclimit.format() + ' offset ' + offset.format()));
     }
 	    
     static testmethod void testInfiniteScroll() {

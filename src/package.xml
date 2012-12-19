@@ -13,7 +13,8 @@
     <types>
         <members>jquery</members>
         <members>scroll</members>
+        <members>waiting</members>
         <name>StaticResource</name>
     </types>
-    <version>20.0</version>
+    <version>26.0</version>
 </Package>

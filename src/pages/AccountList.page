@@ -1,4 +1,4 @@
-<apex:page controller="MyController">
+<apex:page controller="MyController" showHeader="true" sidebar="true">
 	<style>
 		.account {
 			margin:20px 0px;
@@ -38,6 +38,30 @@
 			    }
         	}, {escape:true}); 	 		
 		}
+
+		var offset = {!globalLimit};
+		var limit = {!globalLimit};
+
+		function showmoreOffset() {
+			$("#wait").show();
+			MyController.getMoreOffset(offset, limit, function(result, event) {
+				if (event.status) {  					
+					if (event.status == true) {
+						var moreposts = '';	
+						for(var i = 0; i < result.records.length; i++) {
+							moreposts += '<div class="account">'+result.records[i].Name+'</div>';
+						}
+						$("#wrapper").append(moreposts);
+						offset += limit;
+					} 
+				} else if (event.type === 'exception') {    
+			        	alert('Oops, we messed up. Something went wrong and we are terribly embarrassed by it.');
+			    } else {
+			           	alert('Oops, we messed up. Something went wrong and we are terribly embarrassed by it.');
+			    }
+			    $("#wait").hide();
+			}, {escape:true}); 
+		}
 		
 		$(document).endlessScroll({
 			fireOnce: true,
@@ -45,7 +69,8 @@
 			bottomPixels: 50,
 			callback: function(p) {
 				if (setHasNext)
-					showmore();
+					//showmore();
+					showmoreOffset();
 			}
 		});		
 		
@@ -57,4 +82,5 @@
 			</div>	
 		</apex:repeat>
 	</div>	
+	<img id="wait" style="display:none;" src="{!URLFOR($Resource.waiting)}" height="100" width="100"/>
 </apex:page>
